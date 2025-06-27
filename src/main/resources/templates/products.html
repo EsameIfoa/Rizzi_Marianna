@@ -1,67 +1,94 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${title}">Gestione Prodotti</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
 
-    <title th:text="${title}">Title</title>
+  <style>
+    body {
+      background-color: #f3f4f6;
+    }
+    .modern-card {
+      background-color: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+    .table thead th {
+      background-color: #e8f0fe;
+      color: #333;
+      border: none;
+    }
+    .table tbody tr:hover {
+      background-color: #f6f6f6;
+      transition: all 0.2s ease-in-out;
+    }
+    .btn i {
+      pointer-events: none;
+    }
+    .btn-modern {
+      border-radius: 12px;
+      padding: 0.5rem 0.75rem;
+    }
+  </style>
 </head>
-    <body>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-12 d-flex justify-content-between align-items-center">
-                    <div class="d-flex justify-content-center align-items-center flex-grow-1">
-                        <h1 class="text-center">Tutti i prodotti</h1>
-                        <a th:href="@{/products/create}" class="btn btn-primary m-2">
-                            <i class="fa-solid fa-plus"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
+<body>
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold mb-0">Tutti i Prodotti</h2>
+      <a th:href="@{/products/create}" class="btn btn-success btn-modern">
+        <i class="fa-solid fa-plus me-1"></i> Nuovo Prodotto
+      </a>
+    </div>
 
-       <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <table class="table table-striped table-responsive-lg">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="product:${products}">
-                          <td th:text="${product.id}"></td>
-                          <td th:text="${product.name}"></td>
-                          <td th:text="${product.description}"></td>
-                          <td th:text="${product.price}"></td>
-                          <td th:text="${product.category.name}"></td>
-                          <td>
-                            <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-danger m-2">
-                            <i class="fa-solid fa-trash"></i>
-                            </a>
-                            <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-warning m-2">
-                            <i class="fa-solid fa-pen"></i>
-                            </a>
-                         </td>                         
-                        </tr>
-                     </tbody>                     
-                </table>
-            </div>
-        </div>
+    <div class="modern-card">
+      <div class="table-responsive">
+        <table class="table align-middle text-center">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Descrizione</th>
+              <th>Prezzo</th>
+              <th>Categoria</th>
+              <th>Azioni</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="product : ${products}">
+              <td th:text="${product.id}">1</td>
+              <td th:text="${product.name}">Nome</td>
+              <td th:text="${product.description}">Descrizione</td>
+              <td th:text="'€ ' + ${product.price}">Prezzo</td>
+              <td th:text="${product.category.name}">Categoria</td>
+              <td>
+                <a th:href="@{/products/edit/{id}(id=${product.id})}" 
+                   class="btn btn-warning btn-sm btn-modern me-2" 
+                   data-bs-toggle="tooltip" title="Modifica">
+                  <i class="fa-solid fa-pen"></i>
+                </a>
+                <a th:href="@{/products/delete/{id}(id=${product.id})}" 
+                   class="btn btn-danger btn-sm btn-modern" 
+                   data-bs-toggle="tooltip" title="Elimina">
+                  <i class="fa-solid fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+    </div>
+  </div>
 
-    </body>
-
-        
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltips.forEach(el => new bootstrap.Tooltip(el));
+  </script>
+</body>
 </html>
